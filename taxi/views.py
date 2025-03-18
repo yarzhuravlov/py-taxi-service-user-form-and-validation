@@ -113,12 +113,12 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 def assign_driver_view(request: HttpRequest, pk: int) -> HttpResponse:
     car = get_object_or_404(Car, pk=pk)
 
-    car.drivers.add(request.user)
+    car.drivers.add(request.user.pk)
     return redirect(reverse("taxi:car-detail", args=[pk]))
 
 
 def delete_driver_view(request: HttpRequest, pk: int) -> HttpResponse:
     car = get_object_or_404(Car, pk=pk)
 
-    car.drivers.remove(request.user)
+    car.drivers.remove(request.user.pk)
     return redirect(reverse("taxi:car-detail", args=[pk]))
