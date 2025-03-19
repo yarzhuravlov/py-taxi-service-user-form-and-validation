@@ -1,7 +1,8 @@
-from django.core.validators import RegexValidator
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.urls import reverse
+
+from taxi.utils import license_number_validator
 
 
 class Manufacturer(models.Model):
@@ -20,13 +21,7 @@ class Driver(AbstractUser):
         max_length=255,
         unique=True,
         validators=[
-            RegexValidator(
-                regex="^[A-Z]{3}[0-9]{5}$",
-                message="License number should consist "
-                        "only 8 characters where "
-                        "first 3 characters are uppercase letters and "
-                        "last 5 characters are digits."
-            )
+            license_number_validator
         ]
     )
 

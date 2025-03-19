@@ -1,17 +1,11 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from django.core.validators import RegexValidator
 
-from taxi.models import Driver, Car
+from taxi.models import Car
+from taxi.utils import license_number_validator
 
-license_number_validator = RegexValidator(
-    regex="^[A-Z]{3}[0-9]{5}$",
-    message="License number should consist "
-            "only 8 characters where "
-            "first 3 characters are uppercase letters and "
-            "last 5 characters are digits."
-)
+Driver = get_user_model()
 
 
 class DriverForm(UserCreationForm):
@@ -38,7 +32,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
-        queryset=get_user_model().objects.all(),
+        queryset=Driver.objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=False,
     )
